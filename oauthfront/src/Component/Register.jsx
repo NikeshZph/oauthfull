@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from "react-toastify";
 import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCheckbox, MDBCol, MDBContainer, MDBIcon, MDBInput, MDBRow } from 'mdb-react-ui-kit';
 
 
@@ -25,6 +26,7 @@ function Register() {
     try {
       const response = await axios.post('http://localhost:8080/auth/register', formData);
       console.log('User registered successfully:', response.data);
+      toast.success("User registered in successfully"); 
     } catch (error) {
       console.error('Error registering user:', error);
     }

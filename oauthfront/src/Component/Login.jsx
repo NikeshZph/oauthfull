@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const navigate = useNavigate(); 
-
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -19,16 +18,18 @@ function Login() {
     }));
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axiosInstance.post("/auth/login", formData);
-      console.log('User registered successfully:', response?.data);
+      console.log('User logged in successfully:', response?.data);
       navigate('/home');
     } catch (error) {
-      console.error('Error registering user:', error);
+      console.error('Error logging in:', error);
     }
   };
+
   
   return (
     <MDBContainer fluid>
@@ -58,5 +59,4 @@ function Login() {
     </MDBContainer>
   );
 }
-
 export default Login;

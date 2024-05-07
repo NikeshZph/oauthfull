@@ -1,5 +1,8 @@
 import React from 'react';
 
+
+const getaaa=document.cookie
+console.log(getaaa)
 const WelcomePage = () => {
     // Dummy data for the health insurance section
     const healthInsuranceData = [
