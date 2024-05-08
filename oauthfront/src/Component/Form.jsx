@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import {
   MDBBtn,
   MDBContainer,
@@ -18,47 +17,43 @@ function Form() {
     email: '',
     address: '',
     gender: '',
-    ageGroup: '', 
+    ageGroup: '',
     country: '',
-    dob: '' 
+    dob: ''
   });
 
   const [submittedDate, setSubmittedDate] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
-    if (name === 'ageGroup') {
-      setFormData((prevData) => ({
-        ...prevData,
-        ageGroup: value 
-      }));
-    } else {
-      setFormData((prevData) => ({
-        ...prevData,
-        [name]: value
-      }));
-    }
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const formDataToSend = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
+        lName: formData.lName,
+        fName: formData.fName,
         email: formData.email,
         address: formData.address,
         gender: formData.gender,
-        ageGroup: formData.ageGroup,
+        agegroup: formData.ageGroup,
+        dob: formData.dob,
         country: formData.country,
-        dob: formData.dob
+        submittime: new Date(),
+        submittedby: 'TODO: Get this from user session'
       };
 
-      const response = await axiosInstance.post('/form/save', formDataToSend);
+      const jsessionId = localStorage.getItem('JSESSIONID');
+      const headers = jsessionId ? { 'Cookie': jsessionId } : {};
 
+      const response = await axiosInstance.post('/form/save', formDataToSend, { headers });
       console.log(response.data);
-
       setSubmittedDate(new Date());
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -74,13 +69,11 @@ function Form() {
           <form onSubmit={handleSubmit}>
             <MDBRow>
               <MDBCol size='6'>
-                <MDBInput name='firstName' wrapperClass='mb-4' label='First Name' size='lg' id='formFirstName' type='text' value={formData.firstName} onChange={handleChange} required/>
-              </MDBCol>
+              <MDBInput name='fName' wrapperClass='mb-4' label='First Name' size='lg' id='formFirstName' type='text' value={formData.fName} onChange={handleChange} required/>              </MDBCol>
               <MDBCol size='6'>
-                <MDBInput name='lastName' wrapperClass='mb-4' label='Last Name' size='lg' id='formLastName' type='text' value={formData.lastName} onChange={handleChange} required/>
-              </MDBCol>
+              <MDBInput name='lName' wrapperClass='mb-4' label='Last Name' size='lg' id='formLastName' type='text' value={formData.lName} onChange={handleChange} required/>              </MDBCol>
             </MDBRow>
-            <MDBInput name='email' wrapperClass='mb-4' label='Email' size='lg' id='formEmail' type='email' value={formData.email} onChange={handleChange} required/>
+            <MDBInput name='email' wrapperClass='mb-4' label='Email' size='lg' id='formemail' type='email' value={formData.email} onChange={handleChange} required/>
             <MDBInput name='address' wrapperClass='mb-4' label='Address' size='lg' id='formAddress' type='text' value={formData.address} onChange={handleChange} required/>
             <div className='mb-4'>
               <label className='form-label'>Gender</label>
@@ -118,7 +111,6 @@ function Form() {
                 <option value=''>Select Country</option>
                 <option value='USA'>USA</option>
                 <option value='Canada'>Canada</option>
-                {/* Add more countries as needed */}
               </select>
             </div>
             <MDBBtn className='mb-4 w-100 gradient-custom-4' size='lg' type='submit'>Register</MDBBtn>
@@ -133,5 +125,4 @@ function Form() {
     </MDBContainer>
   );
 }
-
 export default Form;
